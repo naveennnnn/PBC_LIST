@@ -248,14 +248,20 @@
     border-radius: 12px;
     padding: 14px 16px;
     display: flex;
-    align-items: center;
-    gap: 12px;
+    flex-direction: column;
+    gap: 10px;
     transition: border-color 0.2s, background 0.2s;
     animation: fadeIn 0.3s ease both;
   }
   .company-card:hover {
     border-color: var(--border2);
     background: var(--bg3);
+  }
+  .co-top {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
   }
   @keyframes fadeIn {
     from { opacity: 0; transform: translateY(6px); }
@@ -299,7 +305,7 @@
   .perk-learn { background: var(--perk-learn-bg); color: var(--perk-learn); }
   .perk-blr { background: var(--perk-blr-bg); color: var(--perk-blr); }
   .perk-food { background: var(--perk-food-bg); color: var(--perk-food); }
-  .co-links { display: flex; gap: 5px; flex-shrink: 0; }
+  .co-links { display: flex; gap: 5px; flex-wrap: wrap; }
   .co-link {
     text-decoration: none;
     font-size: 11px;
@@ -560,10 +566,12 @@ function render() {
         <div class="company-grid">
           ${group.map((c, i) => `
             <div class="company-card" style="animation-delay:${i * 0.03}s">
-              <div class="co-initial ${c.tier}">${initials(c.name)}</div>
-              <div class="co-info">
-                <div class="co-name">${c.name}</div>
-                <div class="co-perks">${perkTags(c.perks, c.tier)}</div>
+              <div class="co-top">
+                <div class="co-initial ${c.tier}">${initials(c.name)}</div>
+                <div class="co-info">
+                  <div class="co-name">${c.name}</div>
+                  <div class="co-perks">${perkTags(c.perks, c.tier)}</div>
+                </div>
               </div>
               <div class="co-links">
                 <a class="co-link naukri" href="${naukri(c)}" target="_blank">${linkIcon} Naukri</a>
