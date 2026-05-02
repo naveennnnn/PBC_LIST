@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Naveen — PCB Job List</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0e0f11;
+    --bg2: #16181c;
+    --bg3: #1e2026;
+    --border: rgba(255,255,255,0.07);
+    --border2: rgba(255,255,255,0.12);
+    --text: #f0f0f0;
+    --text2: #9a9da6;
+    --text3: #5a5d66;
+    --accent: #4f8ef7;
+    --accent2: #3a6fd4;
+    --green: #34c97a;
+    --amber: #f5a623;
+    --red: #f05555;
+    --t1: #f5c842;
+    --t1bg: rgba(245,200,66,0.1);
+    --t2: #4f8ef7;
+    --t2bg: rgba(79,142,247,0.1);
+    --t3: #34c97a;
+    --t3bg: rgba(52,201,122,0.1);
+    --perk-wlb: #a78bfa;
+    --perk-wlb-bg: rgba(167,139,250,0.12);
+    --perk-learn: #38bdf8;
+    --perk-learn-bg: rgba(56,189,248,0.12);
+    --perk-blr: #fb923c;
+    --perk-blr-bg: rgba(251,146,60,0.12);
+    --perk-food: #f472b6;
+    --perk-food-bg: rgba(244,114,182,0.12);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  /* Header */
+  .hero {
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    padding: 2rem 2.5rem 1.5rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .hero-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+  }
+  .hero-title h1 {
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.4px;
+    color: var(--text);
+  }
+  .hero-title p {
+    font-size: 13px;
+    color: var(--text2);
+    margin-top: 3px;
+  }
+  .stats-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .stat {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 6px 14px;
+    font-size: 12px;
+    color: var(--text2);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .stat strong { color: var(--text); font-weight: 500; }
+  .stat .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--accent);
+  }
+
+  /* Controls */
+  .controls {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .search-wrap {
+    position: relative;
+    flex: 1;
+    min-width: 200px;
+    max-width: 300px;
+  }
+  .search-wrap svg {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.35;
+    pointer-events: none;
+  }
+  .search-input {
+    width: 100%;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    padding: 7px 12px 7px 32px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .search-input:focus { border-color: var(--border2); }
+  .search-input::placeholder { color: var(--text3); }
+  .filter-btn {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text2);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 7px 14px;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .filter-btn:hover { border-color: var(--border2); color: var(--text); }
+  .filter-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .filter-btn.t1a { background: var(--t1bg); border-color: var(--t1); color: var(--t1); }
+  .filter-btn.t2a { background: var(--t2bg); border-color: var(--t2); color: var(--t2); }
+  .filter-btn.t3a { background: var(--t3bg); border-color: var(--t3); color: var(--t3); }
+
+  /* Perk filter buttons */
+  .perk-filters {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+  }
+  .perk-btn {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    color: var(--text2);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 5px 12px;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .perk-btn:hover { border-color: var(--border2); color: var(--text); }
+  .perk-btn.active-wlb { background: var(--perk-wlb-bg); border-color: var(--perk-wlb); color: var(--perk-wlb); }
+  .perk-btn.active-learn { background: var(--perk-learn-bg); border-color: var(--perk-learn); color: var(--perk-learn); }
+  .perk-btn.active-blr { background: var(--perk-blr-bg); border-color: var(--perk-blr); color: var(--perk-blr); }
+  .perk-btn.active-food { background: var(--perk-food-bg); border-color: var(--perk-food); color: var(--perk-food); }
+
+  /* Bulk bar */
+  .bulk-bar {
+    margin: 1.5rem 2.5rem 0;
+    background: linear-gradient(135deg, rgba(79,142,247,0.08), rgba(52,201,122,0.06));
+    border: 1px solid rgba(79,142,247,0.2);
+    border-radius: 12px;
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .bulk-bar-text { font-size: 13px; color: var(--text2); }
+  .bulk-bar-text strong { color: var(--text); }
+  .bulk-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+  .bulk-link {
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 6px 14px;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    transition: opacity 0.15s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .bulk-link:hover { opacity: 0.85; }
+  .bulk-link.naukri { background: rgba(52,201,122,0.15); border: 1px solid rgba(52,201,122,0.3); color: var(--green); }
+  .bulk-link.linkedin { background: rgba(79,142,247,0.15); border: 1px solid rgba(79,142,247,0.3); color: var(--accent); }
+
+  /* Main content */
+  .main { padding: 1.5rem 2.5rem 3rem; }
+
+  /* Tier section */
+  .tier-section { margin-bottom: 2rem; }
+  .tier-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+  .tier-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 3px 10px;
+    border-radius: 20px;
+  }
+  .tier-tag.t1 { background: var(--t1bg); color: var(--t1); border: 1px solid rgba(245,200,66,0.2); }
+  .tier-tag.t2 { background: var(--t2bg); color: var(--t2); border: 1px solid rgba(79,142,247,0.2); }
+  .tier-tag.t3 { background: var(--t3bg); color: var(--t3); border: 1px solid rgba(52,201,122,0.2); }
+  .tier-header-text { font-size: 13px; color: var(--text2); }
+
+  /* Company grid */
+  .company-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 10px;
+  }
+  .company-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: border-color 0.2s, background 0.2s;
+    animation: fadeIn 0.3s ease both;
+  }
+  .company-card:hover {
+    border-color: var(--border2);
+    background: var(--bg3);
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: none; }
+  }
+  .co-initial {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 600;
+    flex-shrink: 0;
+    font-family: 'DM Mono', monospace;
+  }
+  .co-initial.t1 { background: var(--t1bg); color: var(--t1); }
+  .co-initial.t2 { background: var(--t2bg); color: var(--t2); }
+  .co-initial.t3 { background: var(--t3bg); color: var(--t3); }
+  .co-info { flex: 1; min-width: 0; }
+  .co-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .co-perks {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+    margin-top: 4px;
+  }
+  .perk-tag {
+    font-size: 10px;
+    font-weight: 500;
+    padding: 2px 7px;
+    border-radius: 10px;
+    white-space: nowrap;
+    border: 1px solid transparent;
+  }
+  .perk-wlb { background: var(--perk-wlb-bg); color: var(--perk-wlb); }
+  .perk-learn { background: var(--perk-learn-bg); color: var(--perk-learn); }
+  .perk-blr { background: var(--perk-blr-bg); color: var(--perk-blr); }
+  .perk-food { background: var(--perk-food-bg); color: var(--perk-food); }
+  .co-links { display: flex; gap: 5px; flex-shrink: 0; }
+  .co-link {
+    text-decoration: none;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 4px 9px;
+    border-radius: 6px;
+    transition: opacity 0.15s, transform 0.1s;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .co-link:hover { opacity: 0.8; transform: translateY(-1px); }
+  .co-link.naukri { background: var(--t3bg); color: var(--green); border: 1px solid rgba(52,201,122,0.2); }
+  .co-link.linkedin { background: var(--t2bg); color: var(--accent); border: 1px solid rgba(79,142,247,0.2); }
+  .co-link.careers { background: var(--bg3); color: var(--text2); border: 1px solid var(--border); }
+
+  /* Empty state */
+  .empty {
+    text-align: center;
+    padding: 4rem 1rem;
+    color: var(--text3);
+  }
+  .empty p { margin-top: 8px; font-size: 13px; }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 1.5rem;
+    font-size: 12px;
+    color: var(--text3);
+    border-top: 1px solid var(--border);
+  }
+
+  @media (max-width: 640px) {
+    .hero, .main { padding-left: 1.25rem; padding-right: 1.25rem; }
+    .bulk-bar { margin-left: 1.25rem; margin-right: 1.25rem; }
+    .co-links { flex-direction: column; }
+    .hero-top { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-top">
+    <div class="hero-title">
+      <h1>WLB &amp; Learning — Job Tracker</h1>
+      <p>Naveen &nbsp;·&nbsp; Java Developer &nbsp;·&nbsp; Bangalore &nbsp;·&nbsp; 1–3 Years Experience</p>
+    </div>
+    <div class="stats-row">
+      <div class="stat"><span class="dot" style="background:var(--t1)"></span>Tier 1: <strong id="count-t1">0</strong></div>
+      <div class="stat"><span class="dot" style="background:var(--t2)"></span>Tier 2: <strong id="count-t2">0</strong></div>
+      <div class="stat"><span class="dot" style="background:var(--t3)"></span>Tier 3: <strong id="count-t3">0</strong></div>
+      <div class="stat"><span class="dot"></span>Total: <strong id="count-total">0 companies</strong></div>
+    </div>
+  </div>
+  <div class="controls">
+    <div class="search-wrap">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input class="search-input" type="text" id="search" placeholder="Search companies..." oninput="render()">
+    </div>
+    <button class="filter-btn active" id="btn-all" onclick="setFilter('all')">All</button>
+    <button class="filter-btn" id="btn-t1" onclick="setFilter('t1')">Tier 1</button>
+    <button class="filter-btn" id="btn-t2" onclick="setFilter('t2')">Tier 2</button>
+    <button class="filter-btn" id="btn-t3" onclick="setFilter('t3')">Tier 3</button>
+  </div>
+  <div class="perk-filters">
+    <button class="perk-btn" id="perk-wlb" onclick="togglePerk('wlb')">⚖️ WLB</button>
+    <button class="perk-btn" id="perk-learn" onclick="togglePerk('learn')">📚 Learning</button>
+    <button class="perk-btn" id="perk-blr" onclick="togglePerk('blr')">📍 Bangalore</button>
+    <button class="perk-btn" id="perk-food" onclick="togglePerk('food')">🍕 Food</button>
+  </div>
+</div>
+
+<div class="bulk-bar">
+  <div class="bulk-bar-text"><strong>Bulk search</strong> — Find all Java Developer jobs in Bangalore at once</div>
+  <div class="bulk-btns">
+    <a class="bulk-link naukri" href="https://www.naukri.com/java-developer-jobs-in-bengaluru?experience=1,3&jobAge=7" target="_blank">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      All Jobs – Naukri
+    </a>
+    <a class="bulk-link linkedin" href="https://www.linkedin.com/jobs/search/?keywords=Java+Developer&location=Bengaluru%2C+Karnataka&f_E=2%2C3&f_TPR=r604800" target="_blank">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      All Jobs – LinkedIn
+    </a>
+  </div>
+</div>
+
+<main class="main" id="main"></main>
+
+<footer id="footer"></footer>
+
+<script>
+const COMPANIES = [
+  // ── Tier 1: WLB, LEARNING, Bangalore, Food ──
+  {name:"SAP Labs",tier:"t1",perks:["wlb","learn","blr","food"],slug:"sap-labs",li:"SAP",careers:"https://jobs.sap.com/go/SAP-Jobs-in-Bangalore/942201/"},
+  {name:"VMware (Broadcom)",tier:"t1",perks:["wlb","learn","blr","food"],slug:"vmware",li:"VMware",careers:"https://careers.vmware.com/india"},
+  {name:"Nutanix",tier:"t1",perks:["wlb","learn","blr","food"],slug:"nutanix",li:"Nutanix",careers:"https://www.nutanix.com/company/careers"},
+  {name:"Qualcomm",tier:"t1",perks:["wlb","learn","blr","food"],slug:"qualcomm",li:"Qualcomm",careers:"https://careers.qualcomm.com/careers"},
+  {name:"Texas Instruments",tier:"t1",perks:["wlb","learn","blr","food"],slug:"texas-instruments",li:"Texas+Instruments",careers:"https://careers.ti.com/"},
+  {name:"Intuit",tier:"t1",perks:["wlb","learn","blr","food"],slug:"intuit",li:"Intuit",careers:"https://www.intuit.com/careers/locations/india/"},
+  {name:"Postman",tier:"t1",perks:["wlb","learn","blr","food"],slug:"postman",li:"Postman",careers:"https://www.postman.com/company/careers/"},
+  {name:"Akamai",tier:"t1",perks:["wlb","learn","blr","food"],slug:"akamai",li:"Akamai",careers:"https://www.akamai.com/careers"},
+  // ── Tier 1: WLB, LEARNING ──
+  {name:"HubSpot",tier:"t1",perks:["wlb","learn"],slug:"hubspot",li:"HubSpot",careers:"https://www.hubspot.com/careers"},
+  {name:"Airbnb",tier:"t1",perks:["wlb","learn"],slug:"airbnb",li:"Airbnb",careers:"https://careers.airbnb.com/"},
+  {name:"Spotify",tier:"t1",perks:["wlb","learn"],slug:"spotify",li:"Spotify",careers:"https://www.lifeatspotify.com/jobs"},
+  {name:"Shopify",tier:"t1",perks:["wlb","learn"],slug:"shopify",li:"Shopify",careers:"https://www.shopify.com/careers"},
+  {name:"HashiCorp",tier:"t1",perks:["wlb","learn"],slug:"hashicorp",li:"HashiCorp",careers:"https://hashicorp.com/jobs/open-positions"},
+
+  // ── Tier 2: WLB, LEARNING, Bangalore, Food ──
+  {name:"Salesforce",tier:"t2",perks:["wlb","learn","blr","food"],slug:"salesforce",li:"Salesforce",careers:"https://careers.salesforce.com/en/jobs/"},
+  {name:"ServiceNow",tier:"t2",perks:["wlb","learn","blr","food"],slug:"servicenow",li:"ServiceNow",careers:"https://careers.servicenow.com/jobs/"},
+  {name:"Fidelity",tier:"t2",perks:["wlb","learn","blr","food"],slug:"fidelity",li:"Fidelity+Investments",careers:"https://jobs.fidelity.com/in/jobs/"},
+  {name:"ThoughtWorks",tier:"t2",perks:["wlb","learn","blr","food"],slug:"thoughtworks",li:"Thoughtworks",careers:"https://www.thoughtworks.com/en-in/careers/jobs"},
+  {name:"JPMorgan",tier:"t2",perks:["wlb","learn","blr","food"],slug:"jpmorgan",li:"JPMorgan+Chase",careers:"https://jobs.jpmorganchase.com/"},
+  {name:"Zerodha",tier:"t2",perks:["wlb","learn","blr","food"],slug:"zerodha",li:"Zerodha",careers:"https://careers.zerodha.com/"},
+  {name:"Workday",tier:"t2",perks:["wlb","learn","blr","food"],slug:"workday",li:"Workday",careers:"https://www.workday.com/en-in/company/careers/overview.html"},
+  {name:"Freshworks",tier:"t2",perks:["wlb","learn","blr","food"],slug:"freshworks",li:"Freshworks",careers:"https://www.freshworks.com/company/life-at-freshworks/careers"},
+  {name:"Twilio",tier:"t2",perks:["wlb","learn","blr","food"],slug:"twilio",li:"Twilio",careers:"https://www.twilio.com/en-us/company/jobs"},
+  {name:"Booking.com",tier:"t2",perks:["wlb","learn","blr","food"],slug:"booking-com",li:"Booking.com",careers:"https://careers.booking.com/"},
+  {name:"Disney+ Hotstar",tier:"t2",perks:["wlb","learn","blr","food"],slug:"disney-hotstar",li:"Disney%2B+Hotstar",careers:"https://jobs.disneycareers.com/star-india-jobs"},
+  // ── Tier 2: WLB, LEARNING ──
+  {name:"Stripe",tier:"t2",perks:["wlb","learn"],slug:"stripe",li:"Stripe",careers:"https://stripe.com/jobs/search"},
+  {name:"Cloudflare",tier:"t2",perks:["wlb","learn"],slug:"cloudflare",li:"Cloudflare",careers:"https://www.cloudflare.com/careers/"},
+
+  // ── Tier 3: WLB, LEARNING, Bangalore, Food ──
+  {name:"PayPal",tier:"t3",perks:["wlb","learn","blr","food"],slug:"paypal",li:"PayPal",careers:"https://careers.pypl.com/"},
+  {name:"Razorpay",tier:"t3",perks:["wlb","learn","blr","food"],slug:"razorpay",li:"Razorpay",careers:"https://razorpay.com/jobs/"},
+  {name:"Visa Technology",tier:"t3",perks:["wlb","learn","blr","food"],slug:"visa",li:"Visa",careers:"https://corporate.visa.com/en/careers.html"},
+  {name:"Mastercard Technology",tier:"t3",perks:["wlb","learn","blr","food"],slug:"mastercard",li:"Mastercard",careers:"https://careers.mastercard.com/us/en/home"},
+  {name:"Target",tier:"t3",perks:["wlb","learn","blr","food"],slug:"target",li:"Target",careers:"https://indiajobs.target.com/"},
+  {name:"Walmart Global Tech",tier:"t3",perks:["wlb","learn","blr","food"],slug:"walmart",li:"Walmart+Global+Tech",careers:"https://tech.walmart.com/content/walmart-global-tech/en_us/careers.html"},
+  {name:"Flipkart",tier:"t3",perks:["wlb","learn","blr","food"],slug:"flipkart",li:"Flipkart",careers:"https://www.flipkartcareers.com/"},
+  {name:"Meesho",tier:"t3",perks:["wlb","learn","blr","food"],slug:"meesho",li:"Meesho",careers:"https://www.meesho.io/"},
+  {name:"Oracle",tier:"t3",perks:["wlb","learn","blr","food"],slug:"oracle",li:"Oracle",careers:"https://www.oracle.com/in/careers/"},
+  {name:"Zendesk",tier:"t3",perks:["wlb","learn","blr","food"],slug:"zendesk",li:"Zendesk",careers:"https://jobs.zendesk.com/us/en/global-careers/"},
+  {name:"Uber",tier:"t3",perks:["wlb","learn","blr","food"],slug:"uber",li:"Uber",careers:"https://www.uber.com/in/te/careers/list/"},
+  {name:"Snowflake",tier:"t3",perks:["wlb","learn","blr","food"],slug:"snowflake",li:"Snowflake",careers:"https://careers.snowflake.com/us/en"},
+  {name:"Databricks",tier:"t3",perks:["wlb","learn","blr","food"],slug:"databricks",li:"Databricks",careers:"https://databricks.com/company/careers"},
+  {name:"Expedia",tier:"t3",perks:["wlb","learn","blr","food"],slug:"expedia",li:"Expedia",careers:"https://careers.expediagroup.com/"},
+  {name:"MakeMyTrip",tier:"t3",perks:["wlb","learn","blr","food"],slug:"makemytrip",li:"MakeMyTrip",careers:"https://careers.makemytrip.com/"},
+  {name:"Western Digital",tier:"t3",perks:["wlb","learn","blr","food"],slug:"western-digital",li:"Western+Digital",careers:"https://www.westerndigital.com/careers"},
+  {name:"Seagate",tier:"t3",perks:["wlb","learn","blr","food"],slug:"seagate",li:"Seagate",careers:"https://www.seagate.com/in/en/jobs/"},
+  {name:"Micron",tier:"t3",perks:["wlb","learn","blr","food"],slug:"micron",li:"Micron+Technology",careers:"https://careers.micron.com/"},
+];
+
+const TIER_META = {
+  t1: { label: "Tier 1", cls: "t1", desc: "Excellent WLB · Excellent Learning — apply first" },
+  t2: { label: "Tier 2", cls: "t2", desc: "One Excellent, one Good — strong overall balance" },
+  t3: { label: "Tier 3", cls: "t3", desc: "Good WLB · Good Learning — solid and worth trying" },
+};
+
+const PERK_LABELS = {
+  wlb:   { emoji: "⚖️", label: "WLB",       cls: "wlb" },
+  learn:  { emoji: "📚", label: "Learning",   cls: "learn" },
+  blr:   { emoji: "📍", label: "Bangalore",  cls: "blr" },
+  food:  { emoji: "🍕", label: "Food",       cls: "food" },
+};
+
+const QUALITY = {
+  t1: { wlb: "Excellent", learn: "Excellent" },
+  t2: { wlb: "Excellent", learn: "Good" },
+  t3: { wlb: "Good", learn: "Good" },
+};
+
+let activeFilter = 'all';
+let activePerk = null;
+
+// Update stat counts
+function updateCounts() {
+  const t1 = COMPANIES.filter(c => c.tier === 't1').length;
+  const t2 = COMPANIES.filter(c => c.tier === 't2').length;
+  const t3 = COMPANIES.filter(c => c.tier === 't3').length;
+  document.getElementById('count-t1').textContent = t1;
+  document.getElementById('count-t2').textContent = t2;
+  document.getElementById('count-t3').textContent = t3;
+  document.getElementById('count-total').textContent = `${t1 + t2 + t3} companies`;
+  document.getElementById('footer').innerHTML =
+    `Built for Naveen &nbsp;·&nbsp; ${t1+t2+t3} WLB targets in Bangalore &nbsp;·&nbsp; Java Developer 2026`;
+}
+
+function setFilter(f) {
+  activeFilter = f;
+  ['all','t1','t2','t3'].forEach(k => {
+    const b = document.getElementById('btn-'+k);
+    b.className = 'filter-btn';
+    if (k === f) b.className += k === 'all' ? ' active' : ` ${k}a`;
+  });
+  render();
+}
+
+function togglePerk(p) {
+  activePerk = activePerk === p ? null : p;
+  ['wlb','learn','blr','food'].forEach(k => {
+    const b = document.getElementById('perk-'+k);
+    b.className = 'perk-btn';
+    if (k === activePerk) b.className += ` active-${k}`;
+  });
+  render();
+}
+
+function naukri(c) {
+  return `https://www.naukri.com/java-developer-jobs-in-${c.slug}?experience=1,3`;
+}
+function linkedin(c) {
+  return `https://www.linkedin.com/jobs/search/?keywords=Java+Developer+${c.li}&location=Bengaluru%2C+Karnataka&f_E=2%2C3`;
+}
+
+function initials(name) {
+  return name.split(' ').slice(0, 2).map(w => w[0]).join('').toUpperCase();
+}
+
+function perkTags(perks, tier) {
+  return perks.map(p => {
+    const info = PERK_LABELS[p];
+    const q = QUALITY[tier];
+    let qualityLabel = '';
+    if (p === 'wlb' && q) qualityLabel = ` · ${q.wlb}`;
+    if (p === 'learn' && q) qualityLabel = ` · ${q.learn}`;
+    return `<span class="perk-tag perk-${info.cls}">${info.emoji} ${info.label}${qualityLabel}</span>`;
+  }).join('');
+}
+
+function render() {
+  const q = document.getElementById('search').value.trim().toLowerCase();
+  const main = document.getElementById('main');
+
+  const filtered = COMPANIES.filter(c => {
+    const tierOk = activeFilter === 'all' || c.tier === activeFilter;
+    const nameOk = !q || c.name.toLowerCase().includes(q);
+    const perkOk = !activePerk || c.perks.includes(activePerk);
+    return tierOk && nameOk && perkOk;
+  });
+
+  if (!filtered.length) {
+    main.innerHTML = `<div class="empty"><p style="font-size:32px">🔍</p><p>No companies match your search.</p></div>`;
+    return;
+  }
+
+  const linkIcon = `<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>`;
+
+  const tiers = ['t1', 't2', 't3'];
+  let html = '';
+
+  tiers.forEach(tier => {
+    const group = filtered.filter(c => c.tier === tier);
+    if (!group.length) return;
+    const meta = TIER_META[tier];
+    html += `
+      <div class="tier-section" id="section-${tier}">
+        <div class="tier-header">
+          <span class="tier-tag ${meta.cls}">${meta.label}</span>
+          <span class="tier-header-text">${meta.desc} &nbsp;·&nbsp; ${group.length} companies</span>
+        </div>
+        <div class="company-grid">
+          ${group.map((c, i) => `
+            <div class="company-card" style="animation-delay:${i * 0.03}s">
+              <div class="co-initial ${c.tier}">${initials(c.name)}</div>
+              <div class="co-info">
+                <div class="co-name">${c.name}</div>
+                <div class="co-perks">${perkTags(c.perks, c.tier)}</div>
+              </div>
+              <div class="co-links">
+                <a class="co-link naukri" href="${naukri(c)}" target="_blank">${linkIcon} Naukri</a>
+                <a class="co-link linkedin" href="${linkedin(c)}" target="_blank">${linkIcon} LinkedIn</a>
+                <a class="co-link careers" href="${c.careers}" target="_blank">${linkIcon} Careers</a>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      </div>`;
+  });
+
+  main.innerHTML = html;
+}
+
+updateCounts();
+render();
+</script>
+</body>
+</html>
