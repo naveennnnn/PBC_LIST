@@ -239,7 +239,7 @@
   /* Company grid */
   .company-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
     gap: 10px;
   }
   .company-card {
@@ -263,6 +263,13 @@
     gap: 12px;
     width: 100%;
   }
+  .co-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
   @keyframes fadeIn {
     from { opacity: 0; transform: translateY(6px); }
     to { opacity: 1; transform: none; }
@@ -278,7 +285,6 @@
   .co-initial.t1 { background: var(--t1bg); color: var(--t1); }
   .co-initial.t2 { background: var(--t2bg); color: var(--t2); }
   .co-initial.t3 { background: var(--t3bg); color: var(--t3); }
-  .co-info { flex: 1; min-width: 0; }
   .co-name {
     font-size: 13px;
     font-weight: 500;
@@ -286,12 +292,14 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    flex: 1;
+    min-width: 0;
   }
   .co-perks {
     display: flex;
     gap: 4px;
     flex-wrap: wrap;
-    margin-top: 4px;
+    flex-shrink: 0;
   }
   .perk-tag {
     font-size: 10px;
@@ -305,7 +313,7 @@
   .perk-learn { background: var(--perk-learn-bg); color: var(--perk-learn); }
   .perk-blr { background: var(--perk-blr-bg); color: var(--perk-blr); }
   .perk-food { background: var(--perk-food-bg); color: var(--perk-food); }
-  .co-links { display: flex; gap: 5px; flex-wrap: wrap; }
+  .co-links { display: flex; gap: 5px; flex-wrap: wrap; flex-shrink: 0; }
   .co-link {
     text-decoration: none;
     font-size: 11px;
@@ -524,11 +532,7 @@ function initials(name) {
 function perkTags(perks, tier) {
   return perks.map(p => {
     const info = PERK_LABELS[p];
-    const q = QUALITY[tier];
-    let qualityLabel = '';
-    if (p === 'wlb' && q) qualityLabel = ` · ${q.wlb}`;
-    if (p === 'learn' && q) qualityLabel = ` · ${q.learn}`;
-    return `<span class="perk-tag perk-${info.cls}">${info.emoji} ${info.label}${qualityLabel}</span>`;
+    return `<span class="perk-tag perk-${info.cls}">${info.emoji} ${info.label}</span>`;
   }).join('');
 }
 
@@ -568,15 +572,15 @@ function render() {
             <div class="company-card" style="animation-delay:${i * 0.03}s">
               <div class="co-top">
                 <div class="co-initial ${c.tier}">${initials(c.name)}</div>
-                <div class="co-info">
-                  <div class="co-name">${c.name}</div>
-                  <div class="co-perks">${perkTags(c.perks, c.tier)}</div>
-                </div>
+                <div class="co-name">${c.name}</div>
               </div>
-              <div class="co-links">
-                <a class="co-link naukri" href="${naukri(c)}" target="_blank">${linkIcon} Naukri</a>
-                <a class="co-link linkedin" href="${linkedin(c)}" target="_blank">${linkIcon} LinkedIn</a>
-                <a class="co-link careers" href="${c.careers}" target="_blank">${linkIcon} Careers</a>
+              <div class="co-bottom">
+                <div class="co-perks">${perkTags(c.perks, c.tier)}</div>
+                <div class="co-links">
+                  <a class="co-link naukri" href="${naukri(c)}" target="_blank">${linkIcon} Naukri</a>
+                  <a class="co-link linkedin" href="${linkedin(c)}" target="_blank">${linkIcon} LinkedIn</a>
+                  <a class="co-link careers" href="${c.careers}" target="_blank">${linkIcon} Careers</a>
+                </div>
               </div>
             </div>
           `).join('')}
